@@ -1,2 +1,10 @@
-# Programacion-con-Restricciones
-Programas desarrollados en el curso de Programación con Restricciones de la Universidad del Valle
+# Talleres y Proyecto de Programación con Restricciones
+
+Univalle 2019 - 2
+
+Profesor:
+Robinson Andrey Duque Agudelo
+Juan Franciso Díaz Frías
+
+## Desarrolladores:
+* **Jorge Eduardo Mayor Fernández** - [Jorgemayor](https://github.com/Jorgemayor)
