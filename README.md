@@ -2,7 +2,7 @@
 
 Univalle 2019 - 2
 
-Profesor:
+Profesores:
 Robinson Andrey Duque Agudelo
 Juan Franciso Díaz Frías
 
