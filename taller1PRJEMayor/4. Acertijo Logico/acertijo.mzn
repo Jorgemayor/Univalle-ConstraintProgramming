@@ -26,5 +26,7 @@ constraint pop != garcia /\ pop != 24;
 constraint oscar != lopez /\ oscar = 25;
 constraint dario != jazz;
 constraint alldifferent([juan,oscar,dario]);
+constraint alldifferent([gonzalez,garcia,lopez]);
+constraint alldifferent([clasica,pop,jazz]);
 
 solve satisfy;
