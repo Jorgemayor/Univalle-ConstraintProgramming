@@ -1,6 +1,6 @@
 people=["jose", "julian", "diana", "juan", "david", "claudia", "edgar", "mario"];
 
-next=[|5,8|];
+next=[|5,8|2,4|];
 
 separate=[|3, 7|];
 
