@@ -15,7 +15,7 @@ array[int] of int: squareSides;
 int: numberOfSquares = length(squareSides);
 
 %Range of squares
-set of int: rangeSquares = 1..numberOfSquares;
+set of int: rangeSquares = 0..(numberOfSquares-1);
 
 %Width of the final rectangle.
 int: width;
@@ -31,19 +31,20 @@ array[rangeSquares, 1..2] of var 0..(max([width,height])-1): coordenates;
 
 %Does not let the squares pass the limits of the rectangule.
 constraint forall(i in rangeSquares)
-              (coordenates[i,1]+squareSides[i]<=width /\ coordenates[i,2]+squareSides[i]<=height);
+              (coordenates[i,1]+squareSides[i+1]<=width /\ coordenates[i,2]+squareSides[i+1]<=height);
 
 %Avoids gaps and squares of big area.
-constraint sum([squareSides[i]*squareSides[i] | i in rangeSquares])=width*height;
+constraint sum([squareSides[i]*squareSides[i] | i in index_set(squareSides)])=width*height;
 
-%Does not let overlap between squares.
+%Avoids overlap between squares vertically.
 constraint forall(i, j in rangeSquares)
-              (if i != j /\ coordenates[i,1] <= coordenates[j,1] /\ coordenates[j,1] <= coordenates[i,1]+squareSides[i]
-               then coordenates[i,2]+squareSides[i] <= coordenates[j,2]
-               elseif i != j /\ coordenates[i,2] <= coordenates[j,2] /\ coordenates[j,2] <= coordenates[i,2]+squareSides[i]
-               then coordenates[i,1]+squareSides[i] <= coordenates[j,1]
-               else true endif);
+              (if i != j /\ coordenates[i,1] <= coordenates[j,1] /\ coordenates[j,1] <= coordenates[i,1]+squareSides[i+1]
+               then coordenates[i,2]+squareSides[i+1] <= coordenates[j,2] else true endif);
 
+%Avoids overlap between squares horizontally.
+constraint forall(i, j in rangeSquares)
+              (if i != j /\ coordenates[i,2] <= coordenates[j,2] /\ coordenates[j,2] <= coordenates[i,2]+squareSides[i+1]
+               then coordenates[i,1]+squareSides[i+1] <= coordenates[j,1] else true endif);
 
 %Searchs until satisfy (If its possible).
 solve satisfy;
