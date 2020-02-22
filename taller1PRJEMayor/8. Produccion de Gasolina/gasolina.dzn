@@ -1,0 +1,9 @@
+gasolineGalons = 12000;
+
+butaneData=[1200, 600, 1050];
+
+catalyticData=[1000, 25, 30];
+
+naphthaData=[740, 40, 120];
+
+requirements=[890, 110, 170];
