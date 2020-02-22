@@ -1,12 +1,13 @@
-% Sudoku (Punto 1)
+% Sudoku (Point 1)
 
-%LIBRARIES
+
+% LIBRARIES
 
 include "alldifferent.mzn"; %Library of MiniZinc
 include "sudoku.dzn"; %Dataset of sudoku
 
 
-%VARIABLES
+% VARIABLES
 
 %Size of the square that contains 9 cells. It's filled through the external dataset.
 int: smallSquareSize;
@@ -26,18 +27,19 @@ array[1..bigSquareSize, 1..bigSquareSize] of var bigSquareRange: board;
 
 %CONTRAINTS
 
-%Make all numbers in a row, different.
+%Makes all numbers in a row, different.
 constraint forall(i in bigSquareRange) (alldifferent([board[i,j] | j in bigSquareRange]));
 
-%Make all numbers in a column, different.
+%Makes all numbers in a column, different.
 constraint forall(j in bigSquareRange)
             (alldifferent([board[i,j] | i in bigSquareRange]));
 
-%Make different all numbers in smaller squares.
+%Makes different all numbers in smaller squares.
 constraint forall(i,j in smallSquareRange)
             (alldifferent([board[m+3*(i-1),n+3*(j-1)] | m,n in smallSquareRange]));
 
-%Solve until satisfy (If it's possible).
+
+%Solves until satisfy (If it's possible).
 solve satisfy;
 
 %Prints a sudoku board.
