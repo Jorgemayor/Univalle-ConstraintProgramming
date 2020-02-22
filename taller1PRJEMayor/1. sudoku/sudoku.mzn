@@ -10,7 +10,7 @@ include "sudoku.dzn"; %Dataset of sudoku
 % VARIABLES
 
 %Size of the square that contains 9 cells. It's filled through the external dataset.
-int: smallSquareSize;
+int: smallSquareSize = 3;
 
 %Size of the biggest square.
 int: bigSquareSize = smallSquareSize*smallSquareSize;
@@ -18,7 +18,7 @@ int: bigSquareSize = smallSquareSize*smallSquareSize;
 %Size of the small square.
 set of int: smallSquareRange = 1..smallSquareSize;
 
-%Size of the board (It have to be a square, usually of 9x9).
+%Size of the board.
 set of int: bigSquareRange = 1..bigSquareSize;
 
 %Board of the game. It's auto filled with the data in 'sudoku.dzn'.
