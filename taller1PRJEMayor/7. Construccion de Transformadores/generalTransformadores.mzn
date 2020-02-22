@@ -5,6 +5,7 @@
 include "globals.mzn";
 include "transformadores.dzn";
 
+
 % VARIABLES
 
 %Total work time.
@@ -27,11 +28,8 @@ var int: profit;
 
 constraint 2*transformer1 + transformer2 <= material;
 
-%Makes sure not to exceed the time required for the all the first kind transformers to finish.
-constraint 7*transformer1 <= workTime;
-
-%Makes sure not to exceed the time required for the all the second kind transformers to finish.
-constraint 8*transformer2 <= workTime;
+%Makes sure not to exceed the time required to finish.
+constraint 7*transformer1 + 8*transformer2<= workTime;
 
 %Calculates the profit.
 constraint profit = 120*transformer1 + 80*transformer2;
