@@ -8,17 +8,26 @@ include "transformadores.dzn";
 
 % VARIABLES
 
+%Time needed per transformer
+array[int] of 0..infinity: timeNeeded;
+
+%Material needed per transformer
+array[int] of 0..infinity: materialNeeded;
+
+%Profit generated per transformer
+array[int] of 0..infinity: profitGen;
+
+%Number of kinds of transformers
+int: numberOfTransformers = length(profitGen);
+
 %Total work time.
 0..infinity: workTime;
 
 %Quantity of ferromagnetic material available.
 0..infinity: material;
 
-%First transformer.
-var 0..infinity: transformer1;
-
-%Second transformer.
-var 0..infinity: transformer2;
+%Array of transformers
+array[1..numberOfTransformers] of var 0..infinity: transformers;
 
 %Variable to store the profit.
 var int: profit;
@@ -26,14 +35,15 @@ var int: profit;
 
 % CONSTRAINTS
 
-constraint 2*transformer1 + transformer2 <= material;
+%Makes sure not to exceed the material required.
+constraint sum([materialNeeded[i]*transformers[i] | i in 1..numberOfTransformers]) <= material;
 
 %Makes sure not to exceed the time required to finish.
-constraint 7*transformer1 + 8*transformer2<= workTime;
+constraint sum([timeNeeded[i]*transformers[i] | i in 1..numberOfTransformers]) <= workTime;
 
 %Calculates the profit.
-constraint profit = 120*transformer1 + 80*transformer2;
+constraint profit = sum([profitGen[i]*transformers[i] | i in 1..numberOfTransformers]);
 
 
-%Solves maximazing the profit.
+%Solves maximizing the profit.
 solve maximize profit;

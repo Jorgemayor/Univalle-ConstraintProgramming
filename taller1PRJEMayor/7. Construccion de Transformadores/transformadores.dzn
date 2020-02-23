@@ -1,2 +1,7 @@
 workTime=28;
+timeNeeded=[7,8];
+
 material=6;
+materialNeeded=[2,1];
+
+profitGen=[120,80];
