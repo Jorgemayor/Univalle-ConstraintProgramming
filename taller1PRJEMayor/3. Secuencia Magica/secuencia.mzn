@@ -8,14 +8,17 @@ include "secuencia.dzn"; %Dataset
 
 % VARIABLES
 
+%Array with the sequence.
+array[rangeSequence] of var rangeSequence: sequence;
+
+
+% PARAMETERS
+
 %Length of the sequence.
 int: n;
 
 %Range of the sequence.
 set of int: rangeSequence = 0..(n-1);
-
-%Array with the sequence.
-array[rangeSequence] of var rangeSequence: sequence;
 
 
 % CONTRAINTS

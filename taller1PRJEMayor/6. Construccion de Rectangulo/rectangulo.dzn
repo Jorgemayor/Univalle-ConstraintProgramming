@@ -1,5 +1,5 @@
 squareSides = [3, 2, 2, 1, 1, 1];
 
-width = 4;
+width = 5;
 
-height = 5;
+height = 4;

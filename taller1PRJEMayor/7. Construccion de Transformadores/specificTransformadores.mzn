@@ -19,6 +19,7 @@ var int: profit;
 
 % CONSTRAINTS
 
+%Makes sure not to exceed the material required.
 constraint 2*transformer1 + transformer2 <= 6;
 
 %Makes sure not to exceed the time required to finish.

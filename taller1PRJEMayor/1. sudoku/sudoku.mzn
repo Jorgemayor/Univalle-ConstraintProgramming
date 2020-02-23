@@ -7,7 +7,7 @@ include "alldifferent.mzn"; %Library of MiniZinc
 include "sudoku.dzn"; %Dataset of sudoku
 
 
-% VARIABLES
+% Parameters
 
 %Size of the square that contains 9 cells. It's filled through the external dataset.
 int: smallSquareSize = 3;
@@ -21,6 +21,9 @@ set of int: smallSquareRange = 1..smallSquareSize;
 %Size of the board.
 set of int: bigSquareRange = 1..bigSquareSize;
 
+
+% VARIABLES
+
 %Board of the game. It's auto filled with the data in 'sudoku.dzn'.
 array[1..bigSquareSize, 1..bigSquareSize] of var bigSquareRange: board;
 
@@ -28,7 +31,8 @@ array[1..bigSquareSize, 1..bigSquareSize] of var bigSquareRange: board;
 %CONTRAINTS
 
 %Makes all numbers in a row, different.
-constraint forall(i in bigSquareRange) (alldifferent([board[i,j] | j in bigSquareRange]));
+constraint forall(i in bigSquareRange)
+              (alldifferent([board[i,j] | j in bigSquareRange]));
 
 %Makes all numbers in a column, different.
 constraint forall(j in bigSquareRange)

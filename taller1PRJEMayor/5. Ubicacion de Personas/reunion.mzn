@@ -9,6 +9,12 @@ include "reunion.dzn";
 
 % VARIABLES
 
+%Array of positions
+array[rangePositions] of var rangePositions: positions;
+
+
+% PARAMETERS
+
 %Names of the people in the meeting
 array[int] of string: people;
 
@@ -17,9 +23,6 @@ int: numberOfPeople = length(people);
 
 %Possible positions
 set of int: rangePositions = 1..numberOfPeople;
-
-%Array of positions
-array[rangePositions] of var rangePositions: positions;
 
 %Array that specifies the people that must be together.
 array[int, 1..2] of rangePositions: next;
@@ -38,6 +41,7 @@ int: constraintsSeparate = length(separate) div 2;
 
 %Number of constraints in array 'distance'.
 int: constraintsDistance = length(distance) div 3;
+
 
 %Predicate that determines if a pair of positions (numbers) have the given distance between them.
 predicate distance(var int: a, var int: b, var int: distance) = abs(a - b) == distance;
@@ -63,4 +67,4 @@ constraint forall(i in 1..constraintsDistance)
 %Solve until satisfy
 solve satisfy;
 
-output ["Order:"]++[" "++people[fix(positions[i])]| i in rangePositions];
+output [show(positions)];
