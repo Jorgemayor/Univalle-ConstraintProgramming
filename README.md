@@ -2,8 +2,8 @@
 
 Univalle 2019 - 2
 
-Profesores:
-Robinson Andrey Duque Agudelo
+Profesores:<br>
+Robinson Andrey Duque Agudelo <br>
 Juan Franciso Díaz Frías
 
 ## Desarrolladores:
