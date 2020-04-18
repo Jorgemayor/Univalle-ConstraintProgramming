@@ -25,21 +25,21 @@ array[rangoActores, 1..2] of var 1..numeroEscenas: intervalos;
 var numeroActores..max(rangoActores): costo;
 array[rangoActores, rangoEscenas] of var 0..1: ordenActuaciones;
 
-function var int: getIndex(array[int] of var int: elements, int: index) =
-    if elements[index] == 1
+function var int: obtenerEscena(array[int] of var 0..1: elements, int: index) =
+    if elements[index] == 1 % Here is the mistake
         then index
     else
-        getIndex(elements, index + 1)
+        obtenerEscena(elements, index + 1)
     endif;
 
-function var int: obtenerEscena(array[int] of var int: x) = getIndex(x, 0);
+constraint alldifferent(ordenEscenas);
 
 constraint forall(actor in rangoActores, escena in rangoEscenas)
                   (ordenActuaciones[actor, escena] = Escenas[actor, ordenEscenas[escena]]);
 
 constraint forall(actor in rangoActores)
                     (let {array[int] of var int: x = [ordenActuaciones[actor, i] | i in rangoEscenas]} in
-                     intervalos[actor, 1] = obtenerEscena(x) /\
-                     intervalos[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x))));
+                     intervalos[actor, 1] = obtenerEscena(x, 1) /\
+                     intervalos[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1)));
 
 solve satisfy;
