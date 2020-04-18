@@ -26,7 +26,7 @@ var numeroActores..max(rangoActores): costo;
 array[rangoActores, rangoEscenas] of var 0..1: ordenActuaciones;
 
 function var int: obtenerEscena(array[int] of var 0..1: elements, int: index) =
-    if elements[index] == 1 % Here is the mistake
+    if elements[index] == 1 % The mistake is on 'elements[index]'. Try 'true' on condition
         then index
     else
         obtenerEscena(elements, index + 1)
@@ -38,7 +38,7 @@ constraint forall(actor in rangoActores, escena in rangoEscenas)
                   (ordenActuaciones[actor, escena] = Escenas[actor, ordenEscenas[escena]]);
 
 constraint forall(actor in rangoActores)
-                    (let {array[int] of var int: x = [ordenActuaciones[actor, i] | i in rangoEscenas]} in
+                    (let {array[int] of var int: x = row(ordenActuaciones, actor)} in
                      intervalos[actor, 1] = obtenerEscena(x, 1) /\
                      intervalos[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1)));
 
