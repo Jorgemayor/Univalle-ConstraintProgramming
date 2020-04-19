@@ -26,7 +26,9 @@ var numeroActores..max(rangoActores): costo;
 array[rangoActores, rangoEscenas] of var 0..1: ordenActuaciones;
 
 function var int: obtenerEscena(array[int] of var 0..1: elements, int: index) =
-    if elements[index] == 1 % The mistake is on 'elements[index]'. Try 'true' on condition
+    if index = numeroEscenas+1
+        then 0
+    elseif elements[index] == 1 % The mistake is on 'elements[index]'. Try 'true' on condition
         then index
     else
         obtenerEscena(elements, index + 1)
