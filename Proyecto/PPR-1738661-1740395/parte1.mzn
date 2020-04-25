@@ -16,15 +16,14 @@ array[int,int] of int: Escenas;
 array[int] of int: Duracion;
 int: numeroEscenas  = length(Duracion);
 int: numeroActores = max(rangoActores);
-int: costoMaximo= numeroEscenas * numeroActores * max(Duracion) * max([Escenas[salario, numeroEscenas+1] | salario in rangoActores]);
 set of int: rangoActores = index_set_1of2(ACTORES);
 set of int: rangoEscenas = 1..numeroEscenas;
 
 array[rangoEscenas] of var rangoEscenas: ordenEscenas;
 array[rangoActores, 1..2] of var 1..numeroEscenas: intervalos;
 array[rangoActores, rangoEscenas] of var 0..1: ordenActuaciones;
-array[rangoActores] of var 0..costoMaximo: costoPorActor;
-var 0..costoMaximo: costo;
+array[rangoActores] of var 0..infinity: costoPorActor;
+var 0..infinity: costo;
 
 function var int: obtenerEscena(array[int] of var 0..1: elements, int: index) =
     if index = numeroEscenas+1
@@ -43,14 +42,14 @@ constraint forall(actor in rangoActores, escena in rangoEscenas)
 constraint forall(actor in rangoActores)
                     (let {array[int] of var int: x = row(ordenActuaciones, actor)} in
                      intervalos[actor, 1] = obtenerEscena(x, 1) /\
-                     intervalos[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1)));
-                     
+                     intervalos[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1) + 1));
+
 constraint forall(actor in rangoActores)
                   (costoPorActor[actor] = sum([ Duracion[ordenEscenas[escena]] * Escenas[actor, numeroEscenas+1] |
                    escena in rangoEscenas where escena >= intervalos[actor, 1] /\ escena <= intervalos[actor, 2]]));
 
 constraint sum(costoPorActor) = costo;
 
-output[show(costoPorActor)];
+output[show(costo)];
 
 solve minimize costo;
