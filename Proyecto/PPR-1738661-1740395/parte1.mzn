@@ -1,4 +1,4 @@
-include "pruebas/Trivial1.dzn";
+include "pruebas/Trivial2.dzn";
 include "globals.mzn";
 
 /*
@@ -49,6 +49,14 @@ constraint forall(actor in rangoActores)
                    escena in rangoEscenas where escena >= intervalos[actor, 1] /\ escena <= intervalos[actor, 2]]));
 
 constraint sum(costoPorActor) = costo;
+
+output[show(ordenActuaciones[j, i]) ++ ", " ++ if i mod numeroEscenas = 0 then "\n" else "" endif | j in rangoActores, i in rangoEscenas]++ ["\n"];
+
+output[show(costoPorActor)] ++ ["\n\n"];
+
+output[show(ordenEscenas)] ++ ["\n\n"];
+
+output[show(intervalos[j, i]) ++ ", " ++ if i mod 2 = 0 then "\n" else "" endif | j in rangoActores, i in 1..2] ++ ["\n"];
 
 output[show(costo)];
 
