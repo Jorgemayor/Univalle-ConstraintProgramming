@@ -16,7 +16,7 @@ array[int,int] of int: Escenas;
 array[int] of int: Duracion;
 int: numeroEscenas  = length(Duracion);
 int: numeroActores = max(rangoActores);
-set of int: rangoActores = index_set_1of2(ACTORES);
+set of int: rangoActores = index_set(ACTORES);
 set of int: rangoEscenas = 1..numeroEscenas;
 
 array[rangoEscenas] of var rangoEscenas: ordenEscenas;
@@ -50,13 +50,7 @@ constraint forall(actor in rangoActores)
 
 constraint sum(costoPorActor) = costo;
 
-output[show(ordenActuaciones[j, i]) ++ ", " ++ if i mod numeroEscenas = 0 then "\n" else "" endif | j in rangoActores, i in rangoEscenas]++ ["\n"];
-
-output[show(costoPorActor)] ++ ["\n\n"];
-
 output[show(ordenEscenas)] ++ ["\n\n"];
-
-output[show(intervalos[j, i]) ++ ", " ++ if i mod 2 = 0 then "\n" else "" endif | j in rangoActores, i in 1..2] ++ ["\n"];
 
 output[show(costo)];
 
