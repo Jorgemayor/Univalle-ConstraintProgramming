@@ -1,4 +1,4 @@
-include "pruebas/Trivial2.dzn";
+include "pruebas/modelo1/Trivial2.dzn";
 include "globals.mzn";
 
 /*
