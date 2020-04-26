@@ -1,6 +1,6 @@
 %% LIBRARIES
 
-include "pruebas/modelo1/Desenfreno1.dzn";
+include "pruebas/modelo1/Trivial1.dzn";
 include "globals.mzn";
 
 
@@ -38,9 +38,13 @@ set of int: rangoEscenas = 1..numeroEscenas;
 % Right order of the scenes to minimize the cost
 array[rangoEscenas] of var rangoEscenas: ordenEscenas;
 
+% Limits of the intervals that define the first and last scene
+% in which each actor have to be in the set
+array[rangoActores, 1..2] of var 0..numeroEscenas: limites;
+
 % Intervals defining the scene since each actor have to be in
 % the set till each one of them could go out
-array[rangoActores, 1..2] of var 1..numeroEscenas: intervalos;
+array[rangoActores] of var set of 0..numeroEscenas: intervalos;
 
 % Order of perfomances per actor, due to ordenEscenas
 array[rangoActores, rangoEscenas] of var 0..1: ordenActuaciones;
@@ -81,13 +85,17 @@ constraint forall(actor in rangoActores, escena in rangoEscenas)
 % Sets the firs and the last scene in which each actor have to be in the set
 constraint forall(actor in rangoActores)
                     (let {array[int] of var int: x = row(ordenActuaciones, actor)} in
-                     intervalos[actor, 1] = obtenerEscena(x, 1) /\
-                     intervalos[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1) + 1));
+                     limites[actor, 1] = obtenerEscena(x, 1) /\
+                     limites[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1) + 1));
+
+% Define the interval in which each actor have to be in the set
+constraint forall(actor in rangoActores)
+                  (intervalos[actor] = limites[actor,1]..limites[actor,2]);
 
 % Finds the amount of time unities that each actor spend in the set
 constraint forall(actor in rangoActores)
-                  (horasEnSet[actor] = sum([ Duracion[ordenEscenas[escena]] | escena in rangoEscenas
-                   where escena >= intervalos[actor, 1] /\ escena <= intervalos[actor, 2]]));
+                  (horasEnSet[actor] = sum([ Duracion[ordenEscenas[escena]] |
+                  escena in intervalos[actor] where escena != 0]));
 
 % Sets the total cost per actor
 constraint forall(actor in rangoActores)
@@ -96,11 +104,13 @@ constraint forall(actor in rangoActores)
 % Constraints the total cost to be the sum of actors' salary 
 constraint sum(costoPorActor) = costo;
 
+
 % Outputs the scenes in the best order
 output[show(ordenEscenas)] ++ ["\n\n"];
 
 % Outputs the total cost
 output[show(costo)];
+
 
 % Minimize total cost
 solve minimize costo;
