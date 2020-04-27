@@ -135,7 +135,10 @@ constraint forall(actor in rangoActores)
 
 % Finds the time that actors that do not like
 % each other, spend together
-constraint timeToMinimize = sum([card(intervalos[Evitar[relacion,1]] intersect intervalos[Evitar[relacion,2]]) | relacion in 1..length(Evitar) div 2]);
+constraint timeToMinimize =
+                          sum([sum( [Duracion[ordenEscenas[scene]] | scene in (intervalos[Evitar[relacion,1]] intersect
+                                                                intervalos[Evitar[relacion,2]])])
+                                                    | relacion in 1..length(Evitar) div 2]);
 
 
 % Outputs the scenes in the best order
