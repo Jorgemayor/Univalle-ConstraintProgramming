@@ -1,6 +1,6 @@
 %% LIBRARIES
 
-include "pruebas/modelo2/Desenfreno2.dzn";
+include "pruebas/modelo2/Med2-1.dzn";
 include "globals.mzn";
 
 
@@ -63,15 +63,18 @@ var 0..infinity: costo;
 
 % Returns the index of the first scene which an actor performs. If the actor
 % do not perform any scene, returns 0
-function var int: obtenerEscena(array[int] of var 0..1: scenes, int: index) =
+function var int: obtenerEscena(array[int] of var 0..1: scenes) =
+    getIndex(scenes, 1, 1);
+
+
+function var int: getIndex(array[int] of var int: array_, int: index, int: value) =
     if index = numeroEscenas+1
         then 0
-    elseif scenes[index] = 1
+    elseif array_[index] = 1
         then index
     else
-        obtenerEscena(scenes, index + 1)
+        getIndex(array_, index + 1, value)
     endif;
-
 
 %% CONSTRAINTS
 
@@ -85,8 +88,8 @@ constraint forall(actor in rangoActores, escena in rangoEscenas)
 % Sets the firs and the last scene in which each actor have to be in the set
 constraint forall(actor in rangoActores)
                     (let {array[int] of var int: x = row(ordenActuaciones, actor)} in
-                     limites[actor, 1] = obtenerEscena(x, 1) /\
-                     limites[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1) + 1));
+                     limites[actor, 1] = obtenerEscena(x) /\
+                     limites[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x)) + 1));
 
 % Define the interval in which each actor have to be in the set
 constraint forall(actor in rangoActores)
@@ -115,6 +118,9 @@ array[int, 1..2] of int: Disponibilidad;
 array[int, 1..2] of int: Evitar;
 
 
+%% ADDIOTION CALCULATED DATA
+array[rangoEscenas] of var rangoEscenas: indicesOrdenEscenas;
+
 %% ADDITIONAL VARIABLES
 
 % Time that actors that do not like
@@ -139,6 +145,25 @@ constraint timeToMinimize =
                           sum([sum( [Duracion[ordenEscenas[scene]] | scene in (intervalos[Evitar[relacion,1]] intersect
                                                                 intervalos[Evitar[relacion,2]])])
                                                     | relacion in 1..length(Evitar) div 2]);
+
+
+%% AVOID SYMMETRIES
+
+% Avoid inverse solutions
+constraint lex_lesseq(ordenEscenas, reverse(ordenEscenas));
+
+constraint forall(escena in rangoEscenas)
+                  (indicesOrdenEscenas[ordenEscenas[escena]] = escena);
+
+% Differenciate scenes that performs the same actors
+constraint forall(escenaId in rangoEscenas)
+                  (let {array[rangoActores] of 0..1: escena = col(Escenas, escenaId)} in
+                        forall(escenaId2 in escenaId..numeroEscenas)
+                              (if escena = col(Escenas, escenaId)
+                                  then indicesOrdenEscenas[escenaId] < indicesOrdenEscenas[escenaId2]
+                               else
+                                  true
+                               endif));
 
 
 % Outputs the scenes in the best order
