@@ -1,6 +1,6 @@
 %% LIBRARIES
 
-include "pruebas/modelo2/Med2-1.dzn";
+include "pruebas/modelo2/Desenfreno2.dzn";
 include "globals.mzn";
 
 
@@ -63,17 +63,13 @@ var 0..infinity: costo;
 
 % Returns the index of the first scene which an actor performs. If the actor
 % do not perform any scene, returns 0
-function var int: obtenerEscena(array[int] of var 0..1: scenes) =
-    getIndex(scenes, 1, 1);
-
-
-function var int: getIndex(array[int] of var int: array_, int: index, int: value) =
+function var int: obtenerEscena(array[int] of var 0..1: scenes, int: index) =
     if index = numeroEscenas+1
         then 0
-    elseif array_[index] = 1
+    elseif scenes[index] = 1
         then index
     else
-        getIndex(array_, index + 1, value)
+        obtenerEscena(scenes, index + 1)
     endif;
 
 %% CONSTRAINTS
@@ -88,8 +84,8 @@ constraint forall(actor in rangoActores, escena in rangoEscenas)
 % Sets the firs and the last scene in which each actor have to be in the set
 constraint forall(actor in rangoActores)
                     (let {array[int] of var int: x = row(ordenActuaciones, actor)} in
-                     limites[actor, 1] = obtenerEscena(x) /\
-                     limites[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x)) + 1));
+                     limites[actor, 1] = obtenerEscena(x, 1) /\
+                     limites[actor, 2] = (numeroEscenas - obtenerEscena(reverse(x), 1) + 1));
 
 % Define the interval in which each actor have to be in the set
 constraint forall(actor in rangoActores)
@@ -158,8 +154,8 @@ constraint forall(escena in rangoEscenas)
 % Differenciate scenes that performs the same actors
 constraint forall(escenaId in rangoEscenas)
                   (let {array[rangoActores] of 0..1: escena = col(Escenas, escenaId)} in
-                        forall(escenaId2 in escenaId..numeroEscenas)
-                              (if escena = col(Escenas, escenaId)
+                        forall(escenaId2 in (escenaId + 1)..numeroEscenas)
+                              (if escena = col(Escenas, escenaId2)
                                   then indicesOrdenEscenas[escenaId] < indicesOrdenEscenas[escenaId2]
                                else
                                   true
