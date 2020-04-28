@@ -1,6 +1,6 @@
 %% LIBRARIES
 
-include "pruebas/modelo1/Trivial1.dzn";
+%include "pruebas/modelo1/Trivial1.dzn";
 include "globals.mzn";
 
 

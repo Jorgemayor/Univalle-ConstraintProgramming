@@ -72,6 +72,7 @@ function var int: obtenerEscena(array[int] of var 0..1: scenes, int: index) =
         obtenerEscena(scenes, index + 1)
     endif;
 
+
 %% CONSTRAINTS
 
 % Avoid repeted scenes
@@ -114,14 +115,15 @@ array[int, 1..2] of int: Disponibilidad;
 array[int, 1..2] of int: Evitar;
 
 
-%% ADDIOTION CALCULATED DATA
-array[rangoEscenas] of var rangoEscenas: indicesOrdenEscenas;
-
 %% ADDITIONAL VARIABLES
 
 % Time that actors that do not like
 % each other, spend together
 var 0..infinity: timeToMinimize;
+
+% In this array, the index i of the ordenEscenas array, is stored
+% in the index ordenEscenas[i]
+array[rangoEscenas] of var rangoEscenas: indicesOrdenEscenas;
 
 
 % ADDITIONAL CONSTRAINTS
