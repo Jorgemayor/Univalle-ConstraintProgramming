@@ -1,6 +1,6 @@
 %% LIBRARIES
 
-include "pruebas/modelo2/Desenfreno2.dzn";
+include "pruebas/modelo1/Med1-1.dzn";
 include "globals.mzn";
 
 
@@ -167,11 +167,9 @@ constraint forall(escenaId in rangoEscenas)
 % Outputs the scenes in the best order
 output[show(ordenEscenas)] ++ ["\n\n"];
 
-output[show(Evitar)] ++ ["\n\n"];
-
 % Outputs the total cost
 output[show(costo)];
 
 
 % Minimize total cost
-solve minimize costo;
+solve minimize 100000*costo + timeToMinimize;
