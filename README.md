@@ -8,3 +8,4 @@ Juan Franciso Díaz Frías
 
 ## Desarrolladores:
 * **Jorge Eduardo Mayor Fernández** - [Jorgemayor](https://github.com/Jorgemayor)
+* **Nicolás Lasso Jaramillo** - [Murphlaws](https://github.com/Murphlaws)
